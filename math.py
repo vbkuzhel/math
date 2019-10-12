@@ -8,14 +8,17 @@ x=[]
 y=[]
 a=pd.read_csv('HoR.DAT', sep='\t',decimal=',')
 
-#a['median']= a[1].rolling(4).median()
-#a['std'] = a[1].rolling(4).std()
+a['median']= a['R'].rolling(4).median()
+a['std'] = a['R'].rolling(4).std()
 
 #filter setup
 #a = a[(a[1] <= a['median']+3*a['std']) & (a[1] >= a['median']-3*a['std'])]
 for rw in a.values:
     x.append(rw[0])
-    y.append(rw[1])
+    y.append(rw[3])
+    if (rw[1]>rw[2]+3*math.sqrt(rw[3]) or rw[1]<rw[2]-3*math.sqrt(rw[3]) ):
+        print("Found"+str(rw[0])+" ;; "+str(rw[1]))
+    #print(str(rw))
 def mydata(filename):
     mydata=pd.read_csv(filename, sep='\t',decimal=',')
     mx=[]
@@ -52,11 +55,11 @@ fig = plt.figure()  # an empty figure with no axes
 fig.suptitle('Resistivity')  # Add a title so we know which it is
 plt.xlabel('T')
 plt.ylabel('R')
-#plt.plot(x,y,'r+', label="HoR")
+plt.plot(x,y,'r+', label="HoR std")
 
 kx,ky,kdx,kdy,kox,koy=mydata("HoR.DAT")
-plt.plot(kx,ky,'bo', label="Dy1R")
-plt.plot(kox,koy,'r+', label="Dy1R outliers")
+#plt.plot(kx,ky,'bo', label="Dy1R")
+#plt.plot(kox,koy,'r+', label="Dy1R outliers")
 
 plt.legend()
 plt.show()
